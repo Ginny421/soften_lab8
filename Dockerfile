@@ -1,13 +1,18 @@
-FROM jenkins/jenkins:lts-jdk17
+FROM python:3.13-slim
 
-USER root
+# ติดตั้ง dependencies สำหรับระบบและ Chromium
+RUN apt-get update && apt-get install -y \
+    chromium \
+    chromium-driver \
+    && apt-get clean
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 python3-pip git ca-certificates \
-    chromium chromium-driver \
-    && rm -rf /var/lib/apt/lists/*
+# ติดตั้ง Robot Framework และ SeleniumLibrary
+RUN pip install --no-cache-dir \
+    robotframework \
+    robotframework-seleniumlibrary \
+    selenium
 
-RUN pip3 install --no-cache-dir --break-system-packages \
-    robotframework selenium robotframework-seleniumlibrary
+# ตั้งค่า Path สำหรับ Chromium
+ENV PATH="/usr/bin/chromium:${PATH}"
 
-USER jenkins
+WORKDIR /app
