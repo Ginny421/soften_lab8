@@ -1,7 +1,7 @@
- Settings 
+*** Settings ***
 Library    SeleniumLibrary
 
- Keywords 
+*** Keywords ***
 Open Computing Headless
     ${opts}=    Evaluate    import('selenium.webdriver').webdriver.ChromeOptions()
     Call Method    ${opts}    add_argument    --headless
@@ -12,7 +12,7 @@ Open Computing Headless
     Create Webdriver    Chrome    options=${opts}
     Go To    https://computing.kku.ac.th/
 
- Test Cases 
+*** Test Cases ***
 Open computing Website
     Open Computing Headless
     ${title}=    Get Title
